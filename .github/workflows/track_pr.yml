@@ -5,7 +5,7 @@ on:
   pull_request_review:
     types: [edited]
   pull_request:
-    types: [edited]
+    types: [edited, synchronize]
 
 jobs:
   apply-label:
