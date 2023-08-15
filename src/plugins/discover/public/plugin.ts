@@ -200,37 +200,6 @@ export class DiscoverPlugin
     this.docViewsLinksRegistry = new DocViewsLinksRegistry();
     setDocViewsLinksRegistry(this.docViewsLinksRegistry);
 
-    this.docViewsLinksRegistry.addDocViewLink({
-      label: i18n.translate('discover.docTable.tableRow.viewSurroundingDocumentsLinkText', {
-        defaultMessage: 'View surrounding documents',
-      }),
-      generateCb: (renderProps: any) => {
-        const globalFilters: any = getServices().filterManager.getGlobalFilters();
-        const appFilters: any = getServices().filterManager.getAppFilters();
-
-        const hash = stringify(
-          url.encodeQuery({
-            _g: rison.encode({
-              filters: globalFilters || [],
-            }),
-            _a: rison.encode({
-              columns: renderProps.columns,
-              filters: (appFilters || []).map(opensearchFilters.disableFilter),
-            }),
-          }),
-          { encode: false, sort: false }
-        );
-
-        return {
-          url: `#/context/${encodeURIComponent(renderProps.indexPattern.id)}/${encodeURIComponent(
-            renderProps.hit._id
-          )}?${hash}`,
-          hide: !renderProps.indexPattern.isTimeBased(),
-        };
-      },
-      order: 1,
-    });
-
     core.application.register({
       id: PLUGIN_ID,
       title: 'Discover',

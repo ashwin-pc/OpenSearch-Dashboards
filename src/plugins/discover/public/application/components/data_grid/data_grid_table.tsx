@@ -10,7 +10,7 @@ import { fetchTableDataCell } from './data_grid_table_cell_value';
 import { buildDataGridColumns, computeVisibleColumns } from './data_grid_table_columns';
 import { DocViewExpandButton } from './data_grid_table_docview_expand_button';
 import { DataGridFlyout } from './data_grid_table_flyout';
-import { DiscoverGridContextProvider } from './data_grid_table_context';
+import { DiscoverGridContextProvider, FlyoutId } from './data_grid_table_context';
 import { toolbarVisibility } from './constants';
 import { DocViewFilterFn } from '../../doc_views/doc_views_types';
 import { DiscoverServices } from '../../../build_services';
@@ -49,8 +49,7 @@ export const DataGridTable = ({
   isToolbarVisible = true,
 }: DataGridTableProps) => {
   const [expandedHit, setExpandedHit] = useState<OpenSearchSearchHit | undefined>();
-  const [detailFlyoutOpen, setDetailFlyoutOpen] = useState<boolean>(false);
-  const [surroundingFlyoutOpen, setSurroundingFlyoutOpen] = useState<boolean>(false);
+  const [flyout, setFlyout] = useState<FlyoutId>();
   const rowCount = useMemo(() => (rows ? rows.length : 0), [rows]);
   const pagination = usePagination(rowCount);
 
@@ -76,8 +75,8 @@ export const DataGridTable = ({
   const dataGridTableColumnsVisibility = useMemo(
     () => ({
       visibleColumns: computeVisibleColumns(columns, indexPattern, displayTimeColumn) as string[],
-      setVisibleColumns: (columns: string[]) => {
-        onSetColumns(columns);
+      setVisibleColumns: (visibleColumns: string[]) => {
+        onSetColumns(visibleColumns);
       },
     }),
     [columns, indexPattern, displayTimeColumn, onSetColumns]
@@ -105,7 +104,7 @@ export const DataGridTable = ({
         expandedHit,
         onFilter,
         setExpandedHit,
-        setDetailFlyoutOpen,
+        setFlyout,
         rows: rows || [],
         indexPattern,
       }}
@@ -127,7 +126,7 @@ export const DataGridTable = ({
             />
           </EuiPanel>
         </EuiPanel>
-        {detailFlyoutOpen && (
+        {flyout === FlyoutId.SINGLE_DOC && (
           <DataGridFlyout
             indexPattern={indexPattern}
             hit={expandedHit}
@@ -137,20 +136,12 @@ export const DataGridTable = ({
             onFilter={onFilter}
             onClose={() => {
               setExpandedHit(undefined);
-              setDetailFlyoutOpen(false);
+              setFlyout(undefined);
             }}
-            services={services}
-            setDetailFlyoutOpen={setDetailFlyoutOpen}
-            setSurroundingFlyoutOpen={setSurroundingFlyoutOpen}
           />
         )}
-        {surroundingFlyoutOpen && expandedHit && (
-          <SurroundingDocumentsFlyout
-            hit={expandedHit}
-            setExpandedHit={setExpandedHit}
-            setDetailFlyoutOpen={setDetailFlyoutOpen}
-            setSurroundingFlyoutOpen={setSurroundingFlyoutOpen}
-          />
+        {flyout === FlyoutId.SURROUNDING_DOCS && expandedHit && (
+          <SurroundingDocumentsFlyout hit={expandedHit} />
         )}
       </>
     </DiscoverGridContextProvider>

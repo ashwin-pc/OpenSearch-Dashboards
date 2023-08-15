@@ -13,7 +13,7 @@ import { validateTimeRange } from '../../helpers/validate_time_range';
 import { createSearchSource } from './create_search_source';
 import { useIndexPattern } from './use_index_pattern';
 import { OpenSearchSearchHit } from '../../doc_views/doc_views_types';
-import { TimechartHeaderBucketInterval } from '../../components/timechart_header';
+import { TimechartHeaderBucketInterval } from '../../components/chart/timechart_header';
 import { tabifyAggResponse } from '../../../opensearch_dashboards_services';
 import {
   getDimensions,
@@ -37,7 +37,7 @@ export interface SearchData {
   hits?: number;
   rows?: OpenSearchSearchHit[];
   bucketInterval?: TimechartHeaderBucketInterval | {};
-  chartData?: Chart | {};
+  chartData?: Chart;
 }
 
 export type SearchRefetch = 'refetch' | undefined;
@@ -102,7 +102,7 @@ export const useSearch = (services: DiscoverServices) => {
       const hits = fetchResp.hits.total as number;
       const rows = fetchResp.hits.hits;
       let bucketInterval = {};
-      let chartData = {};
+      let chartData;
       for (const row of rows) {
         const fields = Object.keys(indexPattern.flattenHit(row));
         for (const fieldName of fields) {

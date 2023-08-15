@@ -12,10 +12,10 @@ import { CONTEXT_STEP_SETTING } from '../../../../common';
 import { DiscoverViewServices } from '../../../build_services';
 import { useOpenSearchDashboards } from '../../../../../opensearch_dashboards_react/public';
 import {
-  addContextColumn,
-  removeContextColumn,
-  setContextColumns,
-  setContextSort,
+  addColumn,
+  removeColumn,
+  setColumns,
+  setSort,
   setPredecessorCount,
   setSuccessorCount,
   useDispatch,
@@ -50,11 +50,11 @@ export function ContextApp({ onAddFilter, rows }: Props) {
     contextFetchStatus,
   } = useSelector((state) => state.discoverContext);
 
-  const onAddColumn = (col: string) => dispatch(addContextColumn({ col }));
-  const onRemoveColumn = (col: string) => dispatch(removeContextColumn(col));
-  const onSetColumns = (cols: string[]) =>
-    dispatch(setContextColumns({ timefield: indexPattern.timeFieldName, cols }));
-  const onSetSort = (s: Array<[string, string]>) => dispatch(setContextSort(s));
+  const onAddColumn = (column: string) => dispatch(addColumn({ column }));
+  const onRemoveColumn = (column: string) => dispatch(removeColumn(column));
+  const onSetColumns = (newColumns: string[]) =>
+    dispatch(setColumns({ timeField: indexPattern?.timeFieldName, columns: newColumns }));
+  const onSetSort = (s: Array<[string, string]>) => dispatch(setSort(s));
 
   const { anchorStatus, predecessorStatus, successorStatus } = contextFetchStatus;
   const isAnchorLoading =
@@ -81,8 +81,13 @@ export function ContextApp({ onAddFilter, rows }: Props) {
     [dispatch]
   );
 
+  // TODO: improve handling of loading states
+  if (!indexPattern) {
+    return null;
+  }
+
   return (
-    <EuiFlexGroup direction="column" grow={false}>
+    <EuiFlexGroup direction="column">
       <EuiFlexItem>
         <ActionBar
           defaultStepSize={defaultStepSize}

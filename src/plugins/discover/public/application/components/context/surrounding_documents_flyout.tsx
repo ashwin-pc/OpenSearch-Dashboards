@@ -21,20 +21,14 @@ import {
   setAnchorId,
   setContextFilters,
 } from '../../utils/state_management/discover_context_slice';
+import { useDataGridContext } from '../data_grid/data_grid_table_context';
 
 interface Props {
   hit: OpenSearchSearchHit;
-  setDetailFlyoutOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setSurroundingFlyoutOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setExpandedHit: (hit?: OpenSearchSearchHit) => void;
 }
 
-export function SurroundingDocumentsFlyout({
-  hit,
-  setDetailFlyoutOpen,
-  setSurroundingFlyoutOpen,
-  setExpandedHit,
-}: Props) {
+export function SurroundingDocumentsFlyout({ hit }: Props) {
+  const { setFlyout, setExpandedHit } = useDataGridContext();
   const { indexPattern } = useDiscoverContext();
   const {
     services: {
@@ -68,10 +62,10 @@ export function SurroundingDocumentsFlyout({
   });
 
   const onClose = () => {
-    setSurroundingFlyoutOpen(false);
+    setFlyout(undefined);
     setExpandedHit(undefined);
-    setDetailFlyoutOpen(false);
   };
+
   const onAddFilter = useCallback(
     (field: IndexPatternField, values: string, operation: '+' | '-') => {
       const newFilters = opensearchFilters.generateFilters(
@@ -79,7 +73,7 @@ export function SurroundingDocumentsFlyout({
         field,
         values,
         operation,
-        indexPattern.id
+        indexPattern?.id || ''
       );
       return filterManager.addFilters(newFilters);
     },
@@ -149,7 +143,7 @@ export function SurroundingDocumentsFlyout({
           showSearchBar={true}
           showQueryBar={false}
           showDatePicker={false}
-          indexPatterns={[indexPattern]}
+          indexPatterns={indexPattern && [indexPattern]}
           useDefaultBehaviors={true}
         />
       </EuiFlyoutHeader>

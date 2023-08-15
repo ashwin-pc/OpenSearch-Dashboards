@@ -5,11 +5,9 @@
 
 import './discover_chart_container.scss';
 import React, { useState, useEffect } from 'react';
-import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 import { DiscoverViewServices } from '../../../build_services';
 import { useOpenSearchDashboards } from '../../../../../opensearch_dashboards_react/public';
 import { useDiscoverContext } from '../context';
-import { useDispatch } from '../../utils/state_management';
 import { SearchData } from '../utils/use_search';
 import { DiscoverChart } from '../../components/chart/chart';
 
@@ -21,10 +19,7 @@ export const DiscoverChartContainer = () => {
     status: data$.getValue().status,
     hits: 0,
     bucketInterval: {},
-    chartData: {},
   });
-
-  const dispatch = useDispatch();
 
   const { hits, bucketInterval, chartData } = fetchState || {};
 

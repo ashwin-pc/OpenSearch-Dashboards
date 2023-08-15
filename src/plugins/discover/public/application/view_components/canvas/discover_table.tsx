@@ -9,7 +9,14 @@ import { DiscoverViewServices } from '../../../build_services';
 import { useOpenSearchDashboards } from '../../../../../opensearch_dashboards_react/public';
 import { DataGridTable } from '../../components/data_grid/data_grid_table';
 import { useDiscoverContext } from '../context';
-import { addDiscoverColumn, removeDiscoverColumn, setDiscoverColumns, setDiscoverSort, useDispatch, useSelector } from '../../utils/state_management';
+import {
+  addColumn,
+  removeColumn,
+  setColumns,
+  setSort,
+  useDispatch,
+  useSelector,
+} from '../../utils/state_management';
 import { SearchData } from '../utils/use_search';
 import { IndexPatternField, opensearchFilters } from '../../../../../data/public';
 import { DocViewFilterFn } from '../../doc_views/doc_views_types';
@@ -29,10 +36,11 @@ export const DiscoverTable = ({ history }: Props) => {
 
   const { columns, sort } = useSelector((state) => state.discover);
   const dispatch = useDispatch();
-  const onAddColumn=(column:string) => dispatch(addDiscoverColumn({column,}));
-  const onRemoveColumn=(column:string) => dispatch(removeDiscoverColumn(column));
-  const onSetColumns=(columns:string[]) => dispatch(setDiscoverColumns({ timefield: indexPattern.timeFieldName, columns: columns}));
-  const onSetSort=(sort:Array<[string, string]>) => dispatch(setDiscoverSort(sort));
+  const onAddColumn = (column: string) => dispatch(addColumn({ column }));
+  const onRemoveColumn = (column: string) => dispatch(removeColumn(column));
+  const onSetColumns = (newColumns: string[]) =>
+    dispatch(setColumns({ timeField: indexPattern?.timeFieldName, columns: newColumns }));
+  const onSetSort = (newSort: Array<[string, string]>) => dispatch(setSort(newSort));
   const onAddFilter = useCallback(
     (field: IndexPatternField, values: string, operation: '+' | '-') => {
       const newFilters = opensearchFilters.generateFilters(
@@ -40,10 +48,12 @@ export const DiscoverTable = ({ history }: Props) => {
         field,
         values,
         operation,
-        indexPattern.id
+        indexPattern?.id || ''
       );
-    return filterManager.addFilters(newFilters);
-  }, [filterManager, opensearchFilters, indexPattern]);
+      return filterManager.addFilters(newFilters);
+    },
+    [filterManager, indexPattern]
+  );
 
   const { rows } = fetchState || {};
 

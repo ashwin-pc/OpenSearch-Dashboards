@@ -58,39 +58,6 @@ export const discoverContextSlice = createSlice({
     setContextState(state, action: PayloadAction<DiscoverContextState>) {
       return action.payload;
     },
-    addContextColumn(state, action: PayloadAction<{ column: string; index?: number }>) {
-      const columns = addColumn(state.columns || [], action.payload);
-      return { ...state, columns: buildColumns(columns) };
-    },
-    removeContextColumn(state, action: PayloadAction<string>) {
-      const columns = removeColumn(state.columns, action.payload);
-      const sort = state.sort && state.sort.length? state.sort.filter((s) => s[0] !== action.payload): [];
-      return {
-        ...state,
-        columns: buildColumns(columns),
-        sort: sort,
-      };
-    },
-    reorderContextColumn(state, action: PayloadAction<{ source: number; destination: number }>) {
-      const columns = reorderColumn(state.columns, action.payload.source, action.payload.destination);
-      return {
-        ...state,
-        columns: columns,
-      };
-    },
-    setContextColumns(state, action: PayloadAction<{ timeField: string | undefined, columns: string[]}>) {
-      const columns = setColumns(action.payload.timeField, action.payload.columns);
-      return {
-        ...state,
-        columns: columns,
-      };
-    },
-    setContextSort(state, action: PayloadAction<Array<[string, string]>>) {
-      return {
-        ...state,
-        sort: action.payload,
-      };
-    },
     setAnchorId(state, action: PayloadAction<string>) {
       state.anchorId = action.payload;
     },
@@ -127,11 +94,6 @@ export const discoverContextSlice = createSlice({
 
 // Exposing the state functions as generics
 export const {
-  addContextColumn,
-  removeContextColumn,
-  reorderContextColumn,
-  setContextColumns,
-  setContextSort,
   setContextState,
   setAnchorId,
   setAnchor,

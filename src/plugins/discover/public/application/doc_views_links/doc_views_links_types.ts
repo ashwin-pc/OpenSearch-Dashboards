@@ -22,5 +22,4 @@ export interface DocViewLinkRenderProps {
   columns?: string[];
   hit: OpenSearchSearchHit;
   indexPattern: IndexPattern;
-  onClick: () => void;
 }

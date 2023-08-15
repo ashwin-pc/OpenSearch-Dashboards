@@ -9,20 +9,15 @@ import { DiscoverState } from './discover_slice';
 import { DiscoverContextState } from './discover_context_slice';
 
 export {
-  addDiscoverColumn,
-  removeDiscoverColumn,
-  reorderDiscoverColumn,
-  setDiscoverColumns,
+  addColumn,
+  removeColumn,
+  reorderColumn,
+  setColumns,
   setDiscoverState,
-  setDiscoverSort,
-  updateDiscoverState
+  setSort,
+  updateDiscoverState,
 } from './discover_slice';
 export {
-  addContextColumn,
-  removeContextColumn,
-  reorderContextColumn,
-  setContextColumns,
-  setContextSort,
   setContextState,
   setAnchorId,
   setAnchor,
