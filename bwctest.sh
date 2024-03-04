@@ -34,6 +34,7 @@ function usage() {
     echo "--------------------------------------------------------------------------"
 }
 
+
 while getopts ":h:b:p:s:c:o:d:" arg; do
     case $arg in
         h)
