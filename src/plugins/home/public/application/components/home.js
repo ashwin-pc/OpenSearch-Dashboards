@@ -72,6 +72,7 @@ export class Home extends Component {
       // before rendering. This prevents an annoying flickering
       // effect where home renders, and then a few ms after, the
       // welcome screen fades in.
+      // Dummy change. more changes
       isLoading: isWelcomeEnabled,
       isNewOpenSearchDashboardsInstance: false,
       isWelcomeEnabled,
