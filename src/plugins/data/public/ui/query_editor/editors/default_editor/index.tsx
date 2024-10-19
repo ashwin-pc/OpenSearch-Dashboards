@@ -43,15 +43,14 @@ export const DefaultInput: React.FC<DefaultInputProps> = ({
         options={{
           minimap: { enabled: false },
           scrollBeyondLastLine: false,
-          fontSize: 12,
-          lineHeight: 20,
-          fontFamily: 'var(--font-code)',
+          fontSize: 14,
+          fontFamily: 'Roboto Mono',
           lineNumbers: 'on',
           folding: true,
           wordWrap: 'on',
           wrappingIndent: 'same',
           lineDecorationsWidth: 0,
-          lineNumbersMinChars: 1,
+          lineNumbersMinChars: 2,
           wordBasedSuggestions: false,
         }}
         suggestionProvider={{
@@ -71,12 +70,7 @@ export const DefaultInput: React.FC<DefaultInputProps> = ({
       />
       <div className="defaultEditor__footer">
         {footerItems && (
-          <EuiFlexGroup
-            direction="row"
-            alignItems="center"
-            gutterSize="none"
-            className="defaultEditor__footerRow"
-          >
+          <EuiFlexGroup direction="row" alignItems="center">
             {footerItems.start?.map((item) => (
               <EuiFlexItem grow={false} className="defaultEditor__footerItem">
                 {item}

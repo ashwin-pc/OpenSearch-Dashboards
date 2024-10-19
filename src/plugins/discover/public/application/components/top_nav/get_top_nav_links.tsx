@@ -277,8 +277,7 @@ export const getTopNavLinks = (
   services: DiscoverViewServices,
   inspectorAdapters: Adapters,
   savedSearch: SavedSearch,
-  isEnhancementEnabled: boolean = false,
-  useNoIndexPatternsTopNav: boolean = false
+  isEnhancementEnabled: boolean = false
 ) => {
   const {
     history,
@@ -504,18 +503,8 @@ export const getTopNavLinks = (
   // Order their appearance
   return ['save', 'open', 'new', 'inspect', 'share'].reduce((acc, item) => {
     const itemDef = topNavLinksMap.get(item);
-    if (itemDef) {
-      if (useNoIndexPatternsTopNav && item !== 'open') {
-        // Disable all buttons except 'open' when in no index patterns mode
-        acc.push({
-          ...itemDef,
-          disabled: true,
-          run: () => {}, // Empty function for disabled buttons
-        });
-      } else {
-        acc.push(itemDef);
-      }
-    }
+    if (itemDef) acc.push(itemDef);
+
     return acc;
   }, [] as TopNavMenuData[]);
 };

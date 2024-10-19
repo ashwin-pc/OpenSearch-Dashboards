@@ -275,7 +275,6 @@ export function DiscoverFieldSearch({
         <EuiSmallFilterButton
           iconType="filter"
           iconSide="left"
-          iconGap="none"
           hasActiveFilters={activeFiltersCount > 0}
           aria-label={filterBtnAriaLabel}
           data-test-subj="toggleFieldFilterButton"

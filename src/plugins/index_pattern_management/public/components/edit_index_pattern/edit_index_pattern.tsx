@@ -162,8 +162,6 @@ export const EditIndexPattern = withRouter(
         }
         if (indexPattern.id) {
           Promise.resolve(data.indexPatterns.delete(indexPattern.id)).then(function () {
-            const datasetService = data.query.queryString.getDatasetService();
-            datasetService.removeFromRecentDatasets(indexPattern.id);
             history.push('');
           });
         }

@@ -5,7 +5,6 @@
 
 import { HttpSetup, SavedObjectsClientContract } from 'opensearch-dashboards/public';
 import { trimEnd } from 'lodash';
-import { i18n } from '@osd/i18n';
 import {
   DATA_STRUCTURE_META_TYPES,
   DEFAULT_DATA,
@@ -102,29 +101,6 @@ export const s3TypeConfig: DatasetTypeConfig = {
 
   supportedLanguages: (dataset: Dataset): string[] => {
     return ['SQL'];
-  },
-
-  getSampleQueries: (dataset: Dataset, language: string) => {
-    switch (language) {
-      case 'PPL':
-        return [
-          {
-            title: i18n.translate('queryEnhancements.s3Type.sampleQuery.basicPPLQuery', {
-              defaultMessage: 'Sample query for PPL',
-            }),
-            query: `source = ${dataset.title}`,
-          },
-        ];
-      case 'SQL':
-        return [
-          {
-            title: i18n.translate('queryEnhancements.s3Type.sampleQuery.basicSQLQuery', {
-              defaultMessage: 'Sample query for SQL',
-            }),
-            query: `SELECT * FROM ${dataset.title} LIMIT 10`,
-          },
-        ];
-    }
   },
 };
 
